@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { supabase, Profile, Session, User } from "@/lib/supabase";
+import { Session, User } from "@supabase/supabase-js";
+import { supabase, Profile } from "@/lib/supabase";
 
 type AuthContextType = {
   session: Session | null;
@@ -39,33 +40,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
-      setLoading(false);
-    });
-
-    // Listen for auth state changes
+    // Set up listener FIRST to avoid the race where a sign-in event fires
+    // before the listener is registered.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchProfile(session.user.id);
+      (_event, newSession) => {
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+        setLoading(false);
+
+        // Fetch profile in next tick — avoids Supabase internal deadlock
+        if (newSession?.user) {
+          setTimeout(() => fetchProfile(newSession.user.id), 0);
         } else {
           setProfile(null);
         }
-        setLoading(false);
       }
     );
+
+    // Then resolve initial session as a safety net
+    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+      setSession(initialSession);
+      setUser(initialSession?.user ?? null);
+      if (initialSession?.user) {
+        fetchProfile(initialSession.user.id);
+      }
+      setLoading(false);
+    });
 
     return () => subscription.unsubscribe();
   }, []);
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    setProfile(null);
   };
 
   return (
