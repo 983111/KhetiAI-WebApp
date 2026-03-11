@@ -1,17 +1,10 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { 
-  LayoutDashboard, 
-  MessageSquare, 
-  ScanSearch, 
-  TrendingUp, 
-  CloudSun, 
-  Landmark,
-  Sprout,
-  Brain,
-  UserCircle,
-  Bell
+  LayoutDashboard, MessageSquare, ScanSearch, TrendingUp, 
+  CloudSun, Landmark, Sprout, Brain, UserCircle, Bell, LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -25,6 +18,16 @@ const navItems = [
 
 export default function Layout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { profile, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/auth");
+  };
+
+  const displayName = profile?.full_name || "Farmer";
+  const tier = profile?.subscription_tier ?? "free";
 
   return (
     <div className="flex h-screen bg-stone-50 text-stone-900 font-sans">
@@ -54,23 +57,35 @@ export default function Layout() {
                     : "text-stone-600 hover:bg-stone-50 hover:text-stone-900 border border-transparent"
                 )}
               >
-                <item.icon className={cn("w-5 h-5 transition-colors", isActive ? "text-emerald-600" : "text-stone-400 group-hover:text-stone-600")} />
+                <item.icon className={cn("w-5 h-5 transition-colors", isActive ? "text-emerald-600" : "text-stone-400")} />
                 {item.name}
               </Link>
             );
           })}
         </nav>
         
-        <div className="p-4 border-t border-stone-100 bg-stone-50/50">
-          <div className="flex items-center gap-3 p-2 rounded-2xl hover:bg-white hover:shadow-sm border border-transparent hover:border-stone-200 transition-all cursor-pointer">
-            <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0 shadow-inner">
+        <div className="p-4 border-t border-stone-100 bg-stone-50/50 space-y-2">
+          <div className="flex items-center gap-3 p-2 rounded-2xl border border-transparent">
+            <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
               <UserCircle className="w-6 h-6" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-stone-800 truncate">Ramesh Kumar</p>
-              <p className="text-xs font-medium text-emerald-600 truncate">Premium Farmer</p>
+              <p className="text-sm font-bold text-stone-800 truncate">{displayName}</p>
+              <p className={cn(
+                "text-xs font-semibold capitalize truncate",
+                tier === "premium" ? "text-amber-600" : "text-emerald-600"
+              )}>
+                {tier === "premium" ? "Premium Farmer" : "Free Plan"}
+              </p>
             </div>
           </div>
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-stone-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            Sign Out
+          </button>
         </div>
       </aside>
 
