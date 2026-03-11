@@ -50,7 +50,7 @@ export default function DiseaseDetection() {
           </div>
           <h2 className="text-2xl font-bold text-stone-800 mb-2">Crop Disease Detection</h2>
           <p className="text-stone-500 mb-8">
-            Upload a clear photo of the affected plant leaf or crop. Our AI will analyze it instantly.
+            Upload a clear photo of the affected plant leaf or crop. It will be analyzed instantly.
           </p>
 
           <input
@@ -106,7 +106,7 @@ export default function DiseaseDetection() {
         {isLoading ? (
           <div className="bg-white p-8 rounded-3xl border border-stone-200 shadow-sm h-full flex flex-col items-center justify-center text-center space-y-4 min-h-[400px]">
             <div className="w-16 h-16 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin"></div>
-            <h3 className="text-xl font-semibold text-stone-800">AI is analyzing...</h3>
+            <h3 className="text-xl font-semibold text-stone-800">Analyzing...</h3>
             <p className="text-stone-500 max-w-sm">
               Scanning for over 50+ common plant diseases, pests, and nutrient deficiencies.
             </p>
@@ -119,7 +119,7 @@ export default function DiseaseDetection() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-stone-800">Analysis Complete</h3>
-                <p className="text-sm text-stone-500">AI Confidence: High</p>
+                <p className="text-sm text-stone-500">Confidence: High</p>
               </div>
             </div>
             <div className="prose prose-emerald max-w-none">
@@ -133,7 +133,7 @@ export default function DiseaseDetection() {
             </div>
             <h3 className="text-xl font-semibold text-stone-600">No Analysis Yet</h3>
             <p className="text-stone-500 max-w-sm">
-              Upload an image and click analyze to see the AI diagnosis and treatment recommendations here.
+              Upload an image and click analyze to see the diagnosis and treatment recommendations here.
             </p>
           </div>
         )}

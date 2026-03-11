@@ -7,7 +7,7 @@ export default function Assistant() {
   const [messages, setMessages] = useState<{ role: "user" | "assistant"; content: string }[]>([
     {
       role: "assistant",
-      content: "Namaste! I am AgriIntel, your autonomous farm assistant. How can I help you today with weather, crops, prices, or loans?",
+      content: "Namaste! I am your farm assistant. How can I help you today with weather, crops, prices, or loans?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -89,7 +89,7 @@ export default function Assistant() {
             </div>
             <div className="p-4 rounded-2xl bg-stone-50 border border-stone-100 text-stone-800 rounded-tl-none flex items-center gap-2">
               <Loader2 className="w-5 h-5 animate-spin text-emerald-600" />
-              <span className="text-sm text-stone-500">AgriIntel is thinking...</span>
+              <span className="text-sm text-stone-500">Assistant is thinking...</span>
             </div>
           </div>
         )}

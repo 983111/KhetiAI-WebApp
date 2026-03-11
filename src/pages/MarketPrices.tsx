@@ -38,7 +38,7 @@ export default function MarketPrices() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-stone-800 mb-2">Market Price Forecasting</h1>
-          <p className="text-stone-500">AI-powered price predictions for the next 3 months.</p>
+          <p className="text-stone-500">Price predictions for the next 3 months.</p>
         </div>
         
         <form onSubmit={handleSearch} className="relative w-full md:w-auto">

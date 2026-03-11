@@ -81,7 +81,7 @@ export default function AuthPage() {
             Intelligence for<br />every farmer.
           </h1>
           <p className="text-emerald-100 text-lg leading-relaxed mb-12 max-w-md opacity-90">
-            AI-powered crop disease detection, market forecasting, weather alerts, and loan eligibility — built for Indian farmers.
+            Crop disease detection, market forecasting, weather alerts, and loan eligibility — built for Indian farmers.
           </p>
           <div className="space-y-4">
             {[
@@ -139,7 +139,7 @@ export default function AuthPage() {
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Ramesh Kumar"
+                    placeholder="Enter your full name"
                     className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-stone-200 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 transition-all text-stone-800 shadow-sm"
                   />
                 </div>
