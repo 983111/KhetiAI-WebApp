@@ -1,21 +1,19 @@
 /**
- * agriService.ts
- * Frontend service layer — all AI calls go to the Cloudflare Worker.
- * Replace WORKER_URL with your deployed worker URL.
+ * src/services/geminiService.ts
+ * Drop-in replacement — same exports as before, now backed by the
+ * Cloudflare Worker (K2-Think-v2) instead of Gemini directly.
+ *
+ * Replace WORKER_URL with your deployed worker URL after running:
+ *   wrangler deploy
  */
 
-const WORKER_URL = "https://agriintel-worker.vishwajeetadkine705.workers.dev"; // ← update after deploying
+const WORKER_URL = "https://agriintel-worker.vishwajeetadkine705.workers.devv"; // ← update this
 
 // ─── AI Assistant ──────────────────────────────────────────────────────────────
 
-/**
- * Streams a response from the assistant and returns the full text.
- * Optionally pass an `onChunk` callback for real-time streaming UI updates.
- */
 export async function askAgriAgent(
   message: string,
-  context?: string,
-  onChunk?: (chunk: string) => void
+  context?: string
 ): Promise<string> {
   const res = await fetch(`${WORKER_URL}/api/chat`, {
     method: "POST",
@@ -28,7 +26,7 @@ export async function askAgriAgent(
     throw new Error(err.error ?? "Chat request failed");
   }
 
-  // SSE streaming
+  // Read SSE stream and accumulate full text
   const reader = res.body!.getReader();
   const decoder = new TextDecoder();
   let fullText = "";
@@ -50,10 +48,7 @@ export async function askAgriAgent(
       try {
         const parsed = JSON.parse(data);
         const delta: string = parsed.choices?.[0]?.delta?.content ?? "";
-        if (delta) {
-          fullText += delta;
-          onChunk?.(delta);
-        }
+        if (delta) fullText += delta;
       } catch {
         // skip malformed SSE lines
       }
