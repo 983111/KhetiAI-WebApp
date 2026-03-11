@@ -3,11 +3,10 @@
  * Drop-in replacement — same exports as before, now backed by the
  * Cloudflare Worker (K2-Think-v2) instead of Gemini directly.
  *
- * Replace WORKER_URL with your deployed worker URL after running:
- *   wrangler deploy
+ * Worker endpoint used by all AI features.
  */
 
-const WORKER_URL = "https://agriintel-worker.vishwajeetadkine705.workers.devv"; // ← update this
+const WORKER_URL = "https://agriintel-worker.vishwajeetadkine705.workers.dev";
 
 // ─── AI Assistant ──────────────────────────────────────────────────────────────
 
