@@ -339,7 +339,7 @@ export default function IntelligenceHub() {
           Intelligence Hub
         </h1>
         <p className="text-stone-500 max-w-3xl">
-          Your farm's dedicated network of specialized AI agents. Each agent focuses on a specific aspect of your operation, learning and adapting to your unique farm conditions over time.
+          Your farm's dedicated network of specialized agents. Each agent focuses on a specific aspect of your operation, learning and adapting to your unique farm conditions over time.
         </p>
       </div>
 

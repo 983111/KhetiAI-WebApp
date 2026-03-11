@@ -1,7 +1,13 @@
 import { CloudSun, ScanSearch, TrendingUp, Landmark, ArrowRight, MapPin, ChevronRight, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Dashboard() {
+  const { profile, user } = useAuth();
+  const metadataName = typeof user?.user_metadata?.full_name === "string" ? user.user_metadata.full_name : null;
+  const emailName = user?.email?.split("@")[0] ?? null;
+  const displayName = profile?.full_name || metadataName || emailName || "Farmer";
+
   return (
     <div className="space-y-8">
       <div className="bg-gradient-to-br from-emerald-800 via-emerald-700 to-teal-900 text-white rounded-[2rem] p-10 shadow-xl relative overflow-hidden border border-emerald-600/50">
@@ -12,7 +18,7 @@ export default function Dashboard() {
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             Farm Status: Optimal
           </div>
-          <h1 className="text-4xl font-bold mb-4 tracking-tight">Welcome back, Ramesh</h1>
+          <h1 className="text-4xl font-bold mb-4 tracking-tight">Welcome back, {displayName}</h1>
           <p className="text-emerald-50 text-lg mb-8 leading-relaxed font-medium opacity-90">
             Your fields look healthy today. The weather is optimal for sowing wheat.
             Market prices for soybeans have increased by 4% since yesterday.
@@ -21,7 +27,7 @@ export default function Dashboard() {
             to="/assistant" 
             className="inline-flex items-center gap-2 bg-white text-emerald-900 px-7 py-3.5 rounded-2xl font-bold hover:bg-emerald-50 hover:scale-[1.02] transition-all shadow-lg shadow-emerald-900/20"
           >
-            Ask AI Assistant
+            Ask Assistant
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>

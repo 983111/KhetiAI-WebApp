@@ -14,7 +14,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
           </div>
           <div className="flex items-center gap-2 text-stone-500">
             <Loader2 className="w-5 h-5 animate-spin" />
-            <span className="font-medium">Loading AgriIntel...</span>
+            <span className="font-medium">Loading...</span>
           </div>
         </div>
       </div>

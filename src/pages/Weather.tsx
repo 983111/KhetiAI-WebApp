@@ -131,7 +131,7 @@ export default function Weather() {
           </div>
 
           <div className="bg-amber-50 border border-amber-200 p-6 rounded-3xl">
-            <h4 className="font-bold text-amber-800 mb-2">AI Alert</h4>
+            <h4 className="font-bold text-amber-800 mb-2">Weather Alert</h4>
             <p className="text-sm text-amber-700 leading-relaxed">
               Based on the upcoming rain forecast on Wednesday, we recommend delaying pesticide application until Friday to prevent runoff.
             </p>

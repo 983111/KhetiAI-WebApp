@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const navItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Intelligence Hub", href: "/intelligence", icon: Brain },
-  { name: "AI Assistant", href: "/assistant", icon: MessageSquare },
+  { name: "Assistant", href: "/assistant", icon: MessageSquare },
   { name: "Disease Detection", href: "/disease", icon: ScanSearch },
   { name: "Market Prices", href: "/market", icon: TrendingUp },
   { name: "Weather & Satellite", href: "/weather", icon: CloudSun },
@@ -19,14 +19,16 @@ const navItems = [
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { profile, signOut } = useAuth();
+  const { profile, user, signOut } = useAuth();
 
   const handleSignOut = async () => {
     await signOut();
     navigate("/auth");
   };
 
-  const displayName = profile?.full_name || "Farmer";
+  const metadataName = typeof user?.user_metadata?.full_name === "string" ? user.user_metadata.full_name : null;
+  const emailName = user?.email?.split("@")[0] ?? null;
+  const displayName = profile?.full_name || metadataName || emailName || "Farmer";
   const tier = profile?.subscription_tier ?? "free";
 
   return (
