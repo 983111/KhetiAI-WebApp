@@ -1,13 +1,14 @@
 /**
  * src/services/geminiService.ts
- * Drop-in replacement — same exports as before, now backed by the
- * Cloudflare Worker (K2-Think-v2) instead of Gemini directly.
- *
- * Replace WORKER_URL with your deployed worker URL after running:
- *   wrangler deploy
+ * All AI calls routed through the Cloudflare Worker (K2-Think-v2).
+ * Set VITE_WORKER_URL in .env.local and Vercel environment variables.
  */
 
-const WORKER_URL = "https://agriintel-worker.vishwajeetadkine705.workers.devv"; // ← update this
+const WORKER_URL = import.meta.env.VITE_WORKER_URL as string;
+
+if (!WORKER_URL) {
+  console.warn("VITE_WORKER_URL is not set. AI features will not work.");
+}
 
 // ─── AI Assistant ──────────────────────────────────────────────────────────────
 
@@ -26,7 +27,6 @@ export async function askAgriAgent(
     throw new Error(err.error ?? "Chat request failed");
   }
 
-  // Read SSE stream and accumulate full text
   const reader = res.body!.getReader();
   const decoder = new TextDecoder();
   let fullText = "";
