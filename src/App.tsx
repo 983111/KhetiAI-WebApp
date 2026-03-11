@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Layout from "./components/Layout";
 import AuthPage from "./pages/AuthPage";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Assistant from "./pages/Assistant";
 import DiseaseDetection from "./pages/DiseaseDetection";
@@ -23,6 +24,9 @@ export default function App() {
         <Routes>
           {/* Public */}
           <Route path="/auth" element={<AuthPage />} />
+
+          {/* Password reset — must be public so the email link works before login */}
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Protected */}
           <Route
