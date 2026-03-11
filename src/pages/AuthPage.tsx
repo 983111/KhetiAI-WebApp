@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Sprout, Loader2, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -6,6 +7,7 @@ import { cn } from "@/lib/utils";
 type Mode = "signin" | "signup" | "forgot";
 
 export default function AuthPage() {
+  const navigate = useNavigate();
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +17,7 @@ export default function AuthPage() {
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
 
   const handleSubmit = async () => {
+    if (!email.trim()) return;
     setLoading(true);
     setMessage(null);
 
@@ -26,11 +29,17 @@ export default function AuthPage() {
           options: { data: { full_name: fullName } },
         });
         if (error) throw error;
-        setMessage({ type: "success", text: "Account created! Check your email to confirm." });
+        setMessage({ type: "success", text: "Account created! Check your email to confirm, then sign in." });
+
       } else if (mode === "signin") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        // AuthContext will handle redirect via session change
+
+        // Explicit navigation — don't rely solely on AuthContext listener
+        if (data.session) {
+          navigate("/", { replace: true });
+        }
+
       } else {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/reset-password`,
@@ -45,9 +54,17 @@ export default function AuthPage() {
     }
   };
 
+  const switchMode = (newMode: Mode) => {
+    setMode(newMode);
+    setMessage(null);
+    setEmail("");
+    setPassword("");
+    setFullName("");
+  };
+
   return (
     <div className="min-h-screen bg-stone-50 flex">
-      {/* Left: Branding */}
+      {/* Left: Branding panel */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-emerald-800 via-emerald-700 to-teal-900 flex-col justify-between p-16 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500 rounded-full blur-[120px] opacity-30 -translate-y-1/2 translate-x-1/4 mix-blend-screen pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-teal-500 rounded-full blur-[100px] opacity-25 translate-y-1/2 -translate-x-1/4 mix-blend-screen pointer-events-none"></div>
@@ -66,7 +83,6 @@ export default function AuthPage() {
           <p className="text-emerald-100 text-lg leading-relaxed mb-12 max-w-md opacity-90">
             AI-powered crop disease detection, market forecasting, weather alerts, and loan eligibility — built for Indian farmers.
           </p>
-
           <div className="space-y-4">
             {[
               "Real-time crop disease detection",
@@ -89,7 +105,7 @@ export default function AuthPage() {
         </p>
       </div>
 
-      {/* Right: Auth Form */}
+      {/* Right: Form panel */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           {/* Mobile logo */}
@@ -167,9 +183,9 @@ export default function AuthPage() {
                   </button>
                 </div>
                 {mode === "signin" && (
-                  <div className="text-right">
+                  <div className="text-right pt-1">
                     <button
-                      onClick={() => { setMode("forgot"); setMessage(null); }}
+                      onClick={() => switchMode("forgot")}
                       className="text-sm text-emerald-600 hover:text-emerald-700 font-semibold transition-colors"
                     >
                       Forgot password?
@@ -192,8 +208,8 @@ export default function AuthPage() {
 
             <button
               onClick={handleSubmit}
-              disabled={loading || !email || (mode !== "forgot" && !password)}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-emerald-200 hover:shadow-emerald-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0 flex items-center justify-center gap-2"
+              disabled={loading || !email.trim() || (mode !== "forgot" && !password)}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-emerald-200 hover:shadow-emerald-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0 flex items-center justify-center gap-2 mt-2"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -212,7 +228,7 @@ export default function AuthPage() {
               <p className="text-stone-500 text-sm">
                 Don't have an account?{" "}
                 <button
-                  onClick={() => { setMode("signup"); setMessage(null); }}
+                  onClick={() => switchMode("signup")}
                   className="text-emerald-600 font-bold hover:text-emerald-700 transition-colors"
                 >
                   Sign up free
@@ -222,7 +238,7 @@ export default function AuthPage() {
               <p className="text-stone-500 text-sm">
                 Already have an account?{" "}
                 <button
-                  onClick={() => { setMode("signin"); setMessage(null); }}
+                  onClick={() => switchMode("signin")}
                   className="text-emerald-600 font-bold hover:text-emerald-700 transition-colors"
                 >
                   Sign in
