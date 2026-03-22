@@ -16,6 +16,7 @@ import MarketPrices from "./pages/MarketPrices";
 import Weather from "./pages/Weather";
 import LoanEligibility from "./pages/LoanEligibility";
 import IntelligenceHub from "./pages/IntelligenceHub";
+import AiRecommendations from "./pages/AiRecommendations";
 
 export default function App() {
   return (
@@ -43,7 +44,8 @@ export default function App() {
             <Route path="disease" element={<DiseaseDetection />} />
             <Route path="market" element={<MarketPrices />} />
             <Route path="weather" element={<Weather />} />
-            <Route path="loan" element={<LoanEligibility />} />
+            <Route path="loan" element={<LoanEligibility />} 
+            <Route path="recommendations" element={<AiRecommendations />} />/>
           </Route>
 
           {/* Fallback */}
