@@ -1,21 +1,21 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { 
-  LayoutDashboard, MessageSquare, ScanSearch, TrendingUp, 
-  CloudSun, Landmark, Sprout, Brain, UserCircle, Bell, LogOut
+import {
+  LayoutDashboard, MessageSquare, ScanSearch, TrendingUp,
+  CloudSun, Landmark, Sprout, Brain, UserCircle, Bell, LogOut,
+  FlaskConical
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { FlaskConical } from "lucide-react";
 
 const navItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Intelligence Hub", href: "/intelligence", icon: Brain },
+  { name: "AI Recommendations", href: "/recommendations", icon: FlaskConical },
   { name: "Assistant", href: "/assistant", icon: MessageSquare },
   { name: "Disease Detection", href: "/disease", icon: ScanSearch },
   { name: "Market Prices", href: "/market", icon: TrendingUp },
   { name: "Weather & Satellite", href: "/weather", icon: CloudSun },
   { name: "Loan Eligibility", href: "/loan", icon: Landmark },
-  { name: "AI Recommendations", href: "/recommendations", icon: FlaskConical },
 ];
 
 export default function Layout() {
@@ -46,7 +46,7 @@ export default function Layout() {
             <p className="text-xs text-stone-500 font-medium">Farm Assistant</p>
           </div>
         </div>
-        
+
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = location.pathname === item.href;
@@ -56,8 +56,8 @@ export default function Layout() {
                 to={item.href}
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-200",
-                  isActive 
-                    ? "bg-emerald-50 text-emerald-700 shadow-sm border border-emerald-100/50" 
+                  isActive
+                    ? "bg-emerald-50 text-emerald-700 shadow-sm border border-emerald-100/50"
                     : "text-stone-600 hover:bg-stone-50 hover:text-stone-900 border border-transparent"
                 )}
               >
@@ -67,7 +67,7 @@ export default function Layout() {
             );
           })}
         </nav>
-        
+
         <div className="p-4 border-t border-stone-100 bg-stone-50/50 space-y-2">
           <div className="flex items-center gap-3 p-2 rounded-2xl border border-transparent">
             <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
