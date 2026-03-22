@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { FlaskConical } from "lucide-react";
 
 const navItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -14,6 +15,7 @@ const navItems = [
   { name: "Market Prices", href: "/market", icon: TrendingUp },
   { name: "Weather & Satellite", href: "/weather", icon: CloudSun },
   { name: "Loan Eligibility", href: "/loan", icon: Landmark },
+  { name: "AI Recommendations", href: "/recommendations", icon: FlaskConical },
 ];
 
 export default function Layout() {
