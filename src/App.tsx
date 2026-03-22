@@ -44,8 +44,8 @@ export default function App() {
             <Route path="disease" element={<DiseaseDetection />} />
             <Route path="market" element={<MarketPrices />} />
             <Route path="weather" element={<Weather />} />
-            <Route path="loan" element={<LoanEligibility />} 
-            <Route path="recommendations" element={<AiRecommendations />} />/>
+            <Route path="loan" element={<LoanEligibility />} />
+            <Route path="recommendations" element={<AiRecommendations />} />
           </Route>
 
           {/* Fallback */}
